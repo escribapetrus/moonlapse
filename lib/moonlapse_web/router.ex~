@@ -1,0 +1,11 @@
+defmodule MoonlapseWeb.Router do
+  use MoonlapseWeb, :router
+
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
+  scope "/api", MoonlapseWeb do
+    pipe_through :api
+  end
+end

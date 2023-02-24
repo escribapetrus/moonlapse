@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:13.1-alpine
+    environment:
+      POSTGRES_USER: moonlapse
+      POSTGRES_PASSWORD: vertigo
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  database:
+
+
