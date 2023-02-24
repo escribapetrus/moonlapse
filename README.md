@@ -4,6 +4,12 @@ Moonlapse is an app that stores, updates and provides user scores.
 
 It provides an API that fetches the two top scorers among all users. 
 
+## Requirements
+
+- `docker` and `docker-compose`
+- `make` (optional)
+- `elixir` >= 1.14
+
 ## Building and running
 
 You can build and run in one step by running `make`
@@ -43,6 +49,12 @@ with the latest update.
 
 The **Accounts backend** provides the user schema (database table) and
 functions to fetch and update users.
+
+## Cleanup
+
+You can cleanup the application by running `make clean`
+
+This will drop the database, shutdown docker image, and remove deps + _build folders.
 
 ## Observation
 

@@ -9,4 +9,16 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-for x <- 1..1_000_000, do: Moonlapse.Repo.insert!(%Moonlapse.Accounts.User{points: 0})
+create_user = fn ->
+  timestamp =
+    DateTime.utc_now()
+    |> DateTime.to_naive()
+    |> NaiveDateTime.truncate(:second)
+  
+  %{points: 0, inserted_at: timestamp, updated_at: timestamp}
+end
+
+1..1_000_000
+|> Enum.map(fn _ -> create_user.() end)
+|> Enum.chunk_every(20_000)
+|> Enum.each(&Moonlapse.Repo.insert_all(Moonlapse.Accounts.User, &1))
