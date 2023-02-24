@@ -4,10 +4,11 @@ defmodule Moonlapse.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Moonlapse.Repo
 
   alias Moonlapse.Accounts.User
+  alias Moonlapse.Repo
 
+  @doc "Get users with more points than a specified minimum"
   def get_users_by(%{min_points: min_points, limit: limit}) do
     query =
       from u in User,
@@ -27,6 +28,7 @@ defmodule Moonlapse.Accounts do
     Repo.all(query)
   end
 
+  @doc "Updates all users with random points" 
   def update_all_user_points do
     User
     |> Repo.all()

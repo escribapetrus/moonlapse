@@ -31,8 +31,11 @@ defmodule Moonlapse.AccountsTest do
 
     test "update_all_user_points/0 updates all users setting random points" do
       for x <- 1..10, do: user_fixture(%{points: x})
-
       Accounts.update_all_user_points()
+
+      users = Moonlapse.Repo.all(Moonlapse.Accounts.User)
+      refute Enum.all?(users, &(&1.points in 1..10))
+      assert Enum.all?(users, &(&1.points <= Moonlapse.points_limit))
     end
   end
 end
