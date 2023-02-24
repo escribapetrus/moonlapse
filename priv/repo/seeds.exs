@@ -9,4 +9,4 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-for x <- 1..100_000, do: Moonlapse.Repo.insert!(%Moonlapse.Accounts.User{points: 0})
+for x <- 1..1_000_000, do: Moonlapse.Repo.insert!(%Moonlapse.Accounts.User{points: 0})

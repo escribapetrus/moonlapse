@@ -12,8 +12,9 @@ defmodule Moonlapse.Accounts do
   def get_users_by(%{min_points: min_points, limit: limit}) do
     query =
       from u in User,
-        where: u.points > ^min_points,
-        limit: ^limit,
+      where: u.points > ^min_points,
+      limit: ^limit,
+      order_by: [desc: :points],
         select: u
 
     Repo.all(query)
@@ -22,8 +23,9 @@ defmodule Moonlapse.Accounts do
   def get_users_by(%{min_points: min_points}) do
     query =
       from u in User,
-        where: u.points > ^min_points,
-        select: u
+      where: u.points > ^min_points,
+      order_by: [desc: :points],
+      select: u
 
     Repo.all(query)
   end
