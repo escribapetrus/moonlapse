@@ -30,17 +30,10 @@ defmodule Moonlapse.Accounts do
     Repo.all(query)
   end
 
+  @spec update_all_user_points :: any
   @doc "Updates all users with random points" 
-  def update_all_user_points do
-    User
-    |> Repo.all()
-    |> Task.async_stream(fn x -> update_user(x, %{points: :rand.uniform(101) - 1}) end)
-    |> Stream.run()
-  end
-
-  defp update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+  def update_all_user_points() do
+    from(u in User, update: [set: [points: fragment("floor(random() * (100 + 1))")]])
+    |> Repo.update_all([])
   end
 end

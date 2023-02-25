@@ -13,7 +13,7 @@ defmodule Moonlapse.UserPoints do
   use GenServer
   require Logger
 
-  defstruct [:min_points, :timestamp]
+  defstruct [:min_points, :timestamp, locked?: false]
 
   @default_users_limit 2
   @refresh_interval 1000 * 60
@@ -46,18 +46,26 @@ defmodule Moonlapse.UserPoints do
   end
 
   @impl true
-  def handle_info(:refresh, state) do
+  def handle_info(:refresh, %{locked?: false} = state) do
     Logger.info("#{__MODULE__}: Refreshing points and min_points.")
     schedule_refresh()
     spawn_link(fn -> Accounts.update_all_user_points() end)
     min_points = Moonlapse.rand_points(Moonlapse.points_limit())
 
-    {:noreply, %{state | min_points: min_points}}
+    {:noreply, %{state | min_points: min_points, locked?: true}}
+  end
+
+  @impl true
+  def handle_info(:refresh, %{locked?: true} = state) do
+    Logger.info("#{__MODULE__}: Database is locked due to ongoing user updates.")
+    schedule_refresh()
+
+    {:noreply, state}
   end
 
   def handle_info({:EXIT, _pid, :normal}, state) do
     Logger.info("#{__MODULE__}: Finished refreshing users.")
-    {:noreply, state}
+    {:noreply, %{state | locked?: false}}
   end
 
   defp schedule_refresh(), do: Process.send_after(self(), :refresh, @refresh_interval)

@@ -8,6 +8,10 @@ run:
 	echo "Running Moonlapse"
 	mix phx.server
 
+run-interactive:
+	echo "Running Moonlapse with terminal"
+	iex -S mix phx.server
+
 clean:
 	echo "Cleaning up Moonlapse" 
 	mix ecto.drop
