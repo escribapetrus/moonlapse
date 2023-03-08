@@ -35,4 +35,6 @@ defmodule MoonlapseWeb.ConnCase do
     Moonlapse.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
+
+  def fmt_date(dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
 end

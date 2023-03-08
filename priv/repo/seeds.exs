@@ -14,7 +14,7 @@ create_user = fn ->
     DateTime.utc_now()
     |> DateTime.to_naive()
     |> NaiveDateTime.truncate(:second)
-  
+
   %{points: 0, inserted_at: timestamp, updated_at: timestamp}
 end
 

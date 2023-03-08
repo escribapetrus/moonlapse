@@ -35,7 +35,7 @@ defmodule Moonlapse.AccountsTest do
 
       users = Moonlapse.Repo.all(Moonlapse.Accounts.User)
       refute Enum.all?(users, &(&1.points in 1..10))
-      assert Enum.all?(users, &(&1.points <= Moonlapse.points_limit))
+      assert Enum.all?(users, &(&1.points <= Moonlapse.points_limit()))
     end
   end
 end

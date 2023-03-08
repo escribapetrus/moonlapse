@@ -37,11 +37,15 @@ defmodule Moonlapse.UserPoints do
   end
 
   @impl true
-  def handle_call({:query_users, n}, _from, %{min_points: min_points, timestamp: timestamp} = state) do
+  def handle_call(
+        {:query_users, n},
+        _from,
+        %{min_points: min_points, timestamp: timestamp} = state
+      ) do
     Logger.info("#{__MODULE__}: Fetching users.")
     users = Accounts.get_users_by(%{min_points: min_points, limit: n})
     now = DateTime.utc_now()
-    
+
     {:reply, {users, timestamp}, %{state | timestamp: now}}
   end
 
