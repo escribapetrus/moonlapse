@@ -25,4 +25,23 @@ defmodule Moonlapse.UserPointsTest do
     assert u == max_points_users
     assert fmt_date(ts) == fmt_date(timestamp)
   end
+
+  test "refresh user points, min_points, timestamp", %{users: _users} do
+    %{min_points: mp0, timestamp: st0} = :sys.get_state(Server)
+    {u1, qt0} = Server.query_users(3)
+
+    send(Server, :refresh)
+    Process.sleep(1000)
+
+    %{min_points: mp1, timestamp: st1} = :sys.get_state(Server)
+    {u2, qt1} = Server.query_users(3)
+
+    assert qt0 == st0
+    assert qt1 == st1
+    assert qt1 > qt0
+    assert mp0 != mp1
+
+    users = Enum.zip(u1, u2)
+    refute Enum.all?(users, fn {x, y} -> x.points == y.points end)
+  end
 end
