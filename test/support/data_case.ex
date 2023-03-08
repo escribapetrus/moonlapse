@@ -55,4 +55,6 @@ defmodule Moonlapse.DataCase do
       end)
     end)
   end
+
+  def fmt_date(dt), do: Calendar.strftime(dt, "%Y-%m-%d %H:%M")
 end
